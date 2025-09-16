@@ -1,5 +1,5 @@
 from flask import Flask
-from .models import *
+from models import *
 from config import LocalDevelopmentConfig
 
 def create_app():
