@@ -29,6 +29,8 @@ def init_database():
 with app.app_context():
     init_database()
 
+from controllers.routes import *
+
 #Debugger
 if __name__ == "__main__":
     app.run(debug=True)
