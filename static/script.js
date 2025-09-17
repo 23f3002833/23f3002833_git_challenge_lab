@@ -2,9 +2,11 @@
 import Home from "./components/Home.js"          
 import Heading from "./components/Header.js"          
 import Footer from "./components/Footer.js"          
+import summary from "./components/Summary.js"          
 
 const routes = [
   { path: '/', component: Home },
+  { path: '/summary', component: summary },
 ]
 
 // To let the application know that the above array consists of Vue routes, we need to create VueRouter object below
