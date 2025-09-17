@@ -15,4 +15,7 @@
 # (3) Run the python server using the below command
 
    `python3 app.py`            <-- This will start the server for the application
-   
+
+
+--> (Note: If the summary chart seems to be not matching with the data in the Home page,
+     then please reload the page once)
