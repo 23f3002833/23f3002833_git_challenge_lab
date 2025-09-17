@@ -1,5 +1,6 @@
 from flask import current_app as app,jsonify,request, render_template
 from models import *
+import matplotlib.pyplot as plt
 
 @app.route('/')
 def home():
@@ -44,3 +45,76 @@ def Add_User():
             "message":"Error in adding new user to the database"
         }),500
         
+def User_summary_record():
+    data = {}
+    colours = ['#6495ED','#F08080', '#9FE2BF', '#FFA07A', '#CCCCFF','#e59866','#a569bd']
+    set_colour = []
+    flag = 0
+    try:
+        all_users = User.query.all()        
+
+        for user in all_users:
+            
+            level = user.education_level
+
+            if level not in data:
+                data[level] = 1
+
+                if flag <= len(colours):                 # Setting alternative colours of the bars
+                    set_colour.append(colours[flag])
+                    flag += 1
+                else:
+                    flag = 0
+                    set_colour.append(colours[flag])
+
+            else:
+                data[level] += 1
+        
+        return [data,set_colour]
+    
+    except:
+        print("Error in generating User summary record.") 
+
+
+
+@app.route("/user/api/get_summary_data")
+def user_summary_data():
+
+    try:
+        data = User_summary_record()
+        print(data)
+        if data == [{},[]]:
+            return jsonify({
+                "message":"No data found"
+            }),404
+
+        categories = data[0].keys()
+        values = data[0].values()
+
+        # Create the figure and axis
+        fig, ax = plt.subplots(figsize=(8, 6))
+
+        bar_colors = data[1]
+        # Plot the bars
+        bars = ax.bar(categories, values, color=bar_colors)
+
+        # Add value labels to the bars
+        ax.bar_label(bars, padding=3)
+
+        # Set axis labels and title
+        ax.set_xlabel('Level', fontsize=14, fontweight='bold')
+        ax.set_ylabel('Number of Registrations', fontsize=14, fontweight='bold')
+        ax.set_title("Summary of different levels", fontsize=16)
+
+        # Save the chart as a file; change the path as needed
+        plt.savefig(f"./static/Pictures/Summary_chart", dpi=300, bbox_inches='tight')
+        plt.close()  # Closes the plot to free up memory
+
+        return jsonify({
+            "message": "Summary data chart created successfully"
+        })
+    
+    except:
+        return jsonify({
+            "message": "Error in creating summary data chart"
+        }),500
