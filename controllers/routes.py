@@ -82,7 +82,7 @@ def user_summary_data():
 
     try:
         data = User_summary_record()
-        print(data)
+        
         if data == [{},[]]:
             return jsonify({
                 "message":"No data found"
@@ -107,7 +107,7 @@ def user_summary_data():
         ax.set_title("Summary of different levels", fontsize=16)
 
         # Save the chart as a file; change the path as needed
-        plt.savefig(f"./static/Pictures/Summary_chart", dpi=300, bbox_inches='tight')
+        plt.savefig(f"./static/Pictures/Summary_chart.png", dpi=300, bbox_inches='tight')
         plt.close()  # Closes the plot to free up memory
 
         return jsonify({
